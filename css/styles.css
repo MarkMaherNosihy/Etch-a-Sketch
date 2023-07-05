@@ -8,9 +8,9 @@
 
 header h1{
     text-align: center;
-    font-size: 64px;
+    font-size: 42px;
     font-weight: 800;
-    margin-top: 0px;
+    margin: 0;
 }
 
 .container{
@@ -22,13 +22,14 @@ header h1{
 .grid{
     display: flex;
     flex-wrap: wrap;
-    width: 802px;
-    height: 800px;
+    width: 502px;
+    height: 500px;
     border: 1px solid black;
 }
 
 .properties{
     display: flex;
     flex-direction: column;
+    height: 50%;
     gap: 10%;
 }
