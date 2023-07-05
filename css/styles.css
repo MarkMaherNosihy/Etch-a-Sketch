@@ -33,3 +33,21 @@ header h1{
     height: 50%;
     gap: 10%;
 }
+
+#colorpicker{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    width: 100px;
+    height: 100px;
+    border: none;
+    cursor: pointer;
+
+}
+#colorpicker::-webkit-color-swatch{
+    border-radius: 50%;
+    border: 1px solid #000000;
+    box-shadow: 0 0 1rem #000000;
+}
+
