@@ -13,9 +13,12 @@ var styleSheet = Array.from(document.styleSheets).find(function (sheet) {
   });
   
 let pickedColor = colorPicker.value;
+let selectedMode = 'normal';
+
 
 const grid = document.querySelector(".grid");
 let rangeSliderVal = document.getElementById("myRange").value;
+const rainbowBtn = document.getElementById("rainbow-btn");
 const eraserBtn = document.getElementById("eraser-btn");
 const brushBtn = document.getElementById("brush-btn");
 const rangeSlider = document.getElementById("myRange");
@@ -35,16 +38,36 @@ grid.addEventListener('dragstart', (event) => {
 
   function changeColorHold(e)
   {
+    const myCell = e.target;
       if(isMouseDown)
           {
-              const myCell = e.target;
-              myCell.style.backgroundColor = pickedColor;
+            if(selectedMode == 'normal')
+            {
+                myCell.style.backgroundColor = pickedColor;
+            }
+            else if (selectedMode == 'rainbow')
+            {
+                let randomRed = Math.round(Math.random()* 255);
+                let randomGreen = Math.round(Math.random()* 255);
+                let randomBlue = Math.round(Math.random()* 255);
+               myCell.style.backgroundColor = `rgb(${randomRed},${randomGreen},${randomBlue})`;
+            }
           }
   }
   function changeColorClick(e)
   {
               const myCell = e.target;
-              myCell.style.backgroundColor = pickedColor;
+            if(selectedMode == 'normal')
+            {
+                myCell.style.backgroundColor = pickedColor;
+            }
+            else if (selectedMode == 'rainbow')
+            {
+                let randomRed = Math.round(Math.random()* 255);
+                let randomGreen = Math.round(Math.random()* 255);
+                let randomBlue = Math.round(Math.random()* 255);
+               myCell.style.backgroundColor = `rgb(${randomRed},${randomGreen},${randomBlue})`;
+            }
   }
 
   function changePickedColor(e)
@@ -75,10 +98,12 @@ function clearGrid()
 function changeToEraser()
 {
     pickedColor= "#ffffff"
+    selectedMode = 'normal';
 }
 function changetoBrush()
 {
     pickedColor = colorPicker.value;
+    selectedMode = 'normal';
 }
 function checkForGridChange(e)
 {
@@ -86,6 +111,8 @@ function checkForGridChange(e)
         clearGrid();
         gridSizeText.textContent = `${rangeSliderVal} X ${rangeSliderVal}`;
 }
+
+rainbowBtn.addEventListener('click', ()=> selectedMode = 'rainbow')
 colorPicker.addEventListener('input', changePickedColor);
 rangeSlider.addEventListener('input', checkForGridChange);
 clearBtn.addEventListener('click', clearGrid);

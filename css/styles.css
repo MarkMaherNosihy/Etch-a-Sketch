@@ -1,9 +1,6 @@
 *{
     box-sizing: border-box;
-    font-family: 'Caprasimo', cursive;
-    font-family: 'Kanit', sans-serif;
-    font-family: 'Roboto', sans-serif;
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Courgette', cursive;
 }
 
 header h1{
@@ -12,7 +9,9 @@ header h1{
     font-weight: 800;
     margin: 0;
 }
+body{
 
+}
 .container{
     display: flex;
     justify-content: space-evenly;
@@ -23,13 +22,15 @@ header h1{
     display: flex;
     flex-wrap: wrap;
     width: 502px;
-    height: 500px;
+    height: 502px;
     border: 1px solid black;
+    border-radius: 5px;
 }
 
 .properties{
     display: flex;
     flex-direction: column;
+    width: 20%;
     height: 50%;
     gap: 10%;
 }
