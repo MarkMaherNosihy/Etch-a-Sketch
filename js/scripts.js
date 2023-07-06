@@ -1,6 +1,7 @@
 
 
 const defaultGridSize = 16;
+let gridArray = [];
 const colorPicker = document.getElementById("colorpicker");
 // Find the stylesheet that contains the rules
 var styleSheet = Array.from(document.styleSheets).find(function (sheet) {
@@ -14,7 +15,7 @@ var styleSheet = Array.from(document.styleSheets).find(function (sheet) {
   
 let pickedColor = colorPicker.value;
 let selectedMode = 'normal';
-
+let fillStartCell;
 
 const grid = document.querySelector(".grid");
 let rangeSliderVal = document.getElementById("myRange").value;
@@ -52,6 +53,10 @@ grid.addEventListener('dragstart', (event) => {
                 let randomBlue = Math.round(Math.random()* 255);
                myCell.style.backgroundColor = `rgb(${randomRed},${randomGreen},${randomBlue})`;
             }
+            else
+            {
+              selectedMode = 'fill';
+            }
           }
   }
   function changeColorClick(e)
@@ -60,6 +65,8 @@ grid.addEventListener('dragstart', (event) => {
             if(selectedMode == 'normal')
             {
                 myCell.style.backgroundColor = pickedColor;
+                console.log(gridArray[0][2].style.backgroundColor);
+
             }
             else if (selectedMode == 'rainbow')
             {
@@ -67,6 +74,9 @@ grid.addEventListener('dragstart', (event) => {
                 let randomGreen = Math.round(Math.random()* 255);
                 let randomBlue = Math.round(Math.random()* 255);
                myCell.style.backgroundColor = `rgb(${randomRed},${randomGreen},${randomBlue})`;
+            }
+            else{
+              selectedMode = 'fill';
             }
   }
 
@@ -81,13 +91,19 @@ function generateGrid(dim = 16)
 {
     const cellSize = 500 / dim;
     //Getting the grid and creating a cell element
-    for(let i = 0; i < dim*dim; i++)
+    for(let i = 0; i < dim; i++)
     {
-            const cell = document.createElement('div');
-            cell.addEventListener('mouseover', changeColorHold);
-            cell.addEventListener('click', changeColorClick);
-            cell.style.cssText = `width: ${cellSize}px; height: ${cellSize}px`;
-            grid.appendChild(cell);
+            gridArray[i] = [];
+            for(let j = 0; j < dim; j++)
+            {
+             const cell = document.createElement('div');
+              cell.addEventListener('mouseover', changeColorHold);
+              cell.addEventListener('click', changeColorClick);
+              cell.style.cssText = `width: ${cellSize}px; height: ${cellSize}px`;
+              cell.style.backgroundColor = '#ffffff';
+              gridArray[i][j] = cell;
+              grid.appendChild(cell);
+            }
     }    
 }
 function clearGrid()
@@ -111,12 +127,22 @@ function checkForGridChange(e)
         clearGrid();
         gridSizeText.textContent = `${rangeSliderVal} X ${rangeSliderVal}`;
 }
+function isEmpty(cell)
+{
+  if(cell.style.backgroundColor = '#ffffff')
+  return true;
+  else return false;
+  
+}
+
+
+
 
 rainbowBtn.addEventListener('click', ()=> selectedMode = 'rainbow')
 colorPicker.addEventListener('input', changePickedColor);
 rangeSlider.addEventListener('input', checkForGridChange);
 clearBtn.addEventListener('click', clearGrid);
-eraserBtn.addEventListener('click', changeToEraser)
-brushBtn.addEventListener('click', changetoBrush )
+eraserBtn.addEventListener('click', changeToEraser);
+brushBtn.addEventListener('click', changetoBrush );
 generateGrid();
-console.log(pickedColor);
+console.log(gridArray[0][2].style.backgroundColor);
