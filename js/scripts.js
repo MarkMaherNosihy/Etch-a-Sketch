@@ -1,6 +1,6 @@
 
 
-const defaultGridSize = 16;
+let defaultGridSize = 16;
 let gridArray = [];
 const colorPicker = document.getElementById("colorpicker");
 // Find the stylesheet that contains the rules
@@ -25,6 +25,7 @@ const brushBtn = document.getElementById("brush-btn");
 const rangeSlider = document.getElementById("myRange");
 const gridSizeText = document.getElementById("grid-size");
 const  clearBtn = document.getElementById("clear-btn");
+const fillBtn = document.getElementById("fill-btn");
 let isMouseDown = false;
 
 window.addEventListener('mousedown', () =>{
@@ -53,10 +54,6 @@ grid.addEventListener('dragstart', (event) => {
                 let randomBlue = Math.round(Math.random()* 255);
                myCell.style.backgroundColor = `rgb(${randomRed},${randomGreen},${randomBlue})`;
             }
-            else
-            {
-              selectedMode = 'fill';
-            }
           }
   }
   function changeColorClick(e)
@@ -65,7 +62,6 @@ grid.addEventListener('dragstart', (event) => {
             if(selectedMode == 'normal')
             {
                 myCell.style.backgroundColor = pickedColor;
-                console.log(gridArray[0][2].style.backgroundColor);
 
             }
             else if (selectedMode == 'rainbow')
@@ -76,7 +72,9 @@ grid.addEventListener('dragstart', (event) => {
                myCell.style.backgroundColor = `rgb(${randomRed},${randomGreen},${randomBlue})`;
             }
             else{
-              selectedMode = 'fill';
+              let indices = getCellIndex(myCell);
+              fillStartCell = myCell;
+              fill(fillStartCell, indices[0], indices[1]);
             }
   }
 
@@ -124,25 +122,61 @@ function changetoBrush()
 function checkForGridChange(e)
 {
         rangeSliderVal = e.target.value;
+        defaultGridSize = rangeSliderVal;
         clearGrid();
         gridSizeText.textContent = `${rangeSliderVal} X ${rangeSliderVal}`;
 }
 function isEmpty(cell)
 {
-  if(cell.style.backgroundColor = '#ffffff')
-  return true;
-  else return false;
+  if(cell.style.backgroundColor == 'rgb(255, 255, 255)')
+  {
+    return true;
+  }
+  return false;
   
+}
+function getCellIndex(cell)
+{
+  for(let i = 0; i < defaultGridSize; i++)
+  {
+    
+    for(let j = 0; j < defaultGridSize; j++)
+    {
+      if(cell == gridArray[i][j])
+      return [i, j];
+    }
+  }
+}
+
+function fill(startCell, row, col)
+{
+  startCell.style.backgroundColor = pickedColor;
+  if(!(col-1 < 0) && isEmpty(gridArray[row][col-1]))
+  {
+    fill(gridArray[row][col-1], row, col-1);
+  }
+  if (!(col+1 > (defaultGridSize - 1)) && isEmpty(gridArray[row][col+1]))
+  {
+    fill(gridArray[row][col+1], row, col+1);
+  }
+  if (!(row + 1 > (defaultGridSize - 1)) && isEmpty(gridArray[row+1][col]))
+  {
+    fill(gridArray[row+1][col], row+1, col);
+  }
+ if ( !(row-1 < 0) && isEmpty(gridArray[row-1][col]))
+  {
+    fill(gridArray[row-1][col], row-1, col);
+  }
+  return;
 }
 
 
-
-
-rainbowBtn.addEventListener('click', ()=> selectedMode = 'rainbow')
+fillBtn.addEventListener('click', ()=> selectedMode = 'fill');
+rainbowBtn.addEventListener('click', ()=> selectedMode = 'rainbow');
 colorPicker.addEventListener('input', changePickedColor);
 rangeSlider.addEventListener('input', checkForGridChange);
 clearBtn.addEventListener('click', clearGrid);
 eraserBtn.addEventListener('click', changeToEraser);
 brushBtn.addEventListener('click', changetoBrush );
 generateGrid();
-console.log(gridArray[0][2].style.backgroundColor);
+
